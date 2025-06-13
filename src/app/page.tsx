@@ -1,103 +1,74 @@
-import Image from "next/image";
+'use client'
+
+import { useState } from 'react'
+import Quiz from '@/components/Quiz'
+import LeadForm from '@/components/LeadForm'
+import Results from '@/components/Results'
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [currentStep, setCurrentStep] = useState<'intro' | 'quiz' | 'leadform' | 'results'>('intro')
+  const [quizResults, setQuizResults] = useState<{score: number, answers: number[]}>({ score: 0, answers: [] })
+  const [leadData, setLeadData] = useState<{name: string, email: string, company: string}>({ name: '', email: '', company: '' })
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+  const handleQuizComplete = (score: number, answers: number[]) => {
+    setQuizResults({ score, answers })
+    setCurrentStep('leadform')
+  }
+
+  const handleLeadSubmit = (data: {name: string, email: string, company: string}) => {
+    setLeadData(data)
+    setCurrentStep('results')
+  }
+
+  const startQuiz = () => {
+    setCurrentStep('quiz')
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900">
+      <div className="container mx-auto px-4 py-8">
+        {currentStep === 'intro' && (
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 shadow-2xl">
+              <h1 className="text-5xl font-bold text-white mb-6">
+                AI Marketing Mastery Quiz
+              </h1>
+              <p className="text-xl text-gray-200 mb-8">
+                Discover how well you understand AI&apos;s role in modern marketing
+              </p>
+              <div className="bg-orange-500/20 backdrop-blur-sm rounded-2xl p-6 mb-8">
+                <h2 className="text-2xl font-semibold text-orange-300 mb-4">
+                  Brought to you by Cut Through wit AI
+                </h2>
+                <p className="text-gray-300">
+                  The podcast that cuts through the noise to deliver actionable AI insights for marketers and business leaders.
+                </p>
+              </div>
+              <button
+                onClick={startQuiz}
+                className="bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white px-8 py-4 rounded-full text-xl font-semibold transform hover:scale-105 transition-all duration-200 shadow-lg"
+              >
+                Start Quiz
+              </button>
+            </div>
+          </div>
+        )}
+
+        {currentStep === 'quiz' && (
+          <Quiz onComplete={handleQuizComplete} />
+        )}
+
+        {currentStep === 'leadform' && (
+          <LeadForm onSubmit={handleLeadSubmit} />
+        )}
+
+        {currentStep === 'results' && (
+          <Results 
+            score={quizResults.score} 
+            leadData={leadData}
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        )}
+      </div>
     </div>
-  );
+  )
 }
