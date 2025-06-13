@@ -119,51 +119,51 @@ export default function Quiz({ onComplete }: QuizProps) {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 shadow-2xl">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
         <div className="mb-8">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-bold text-white">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-bold text-gray-900 font-sans">
               Question {currentQuestion + 1} of {questions.length}
             </h2>
-            <div className="text-orange-300 font-semibold">
+            <div className="text-teal-600 font-medium">
               {Math.round(progress)}% Complete
             </div>
           </div>
-          <div className="w-full bg-gray-700 rounded-full h-2">
+          <div className="w-full bg-gray-200 rounded-full h-1">
             <div 
-              className="bg-gradient-to-r from-orange-500 to-pink-500 h-2 rounded-full transition-all duration-300"
+              className="bg-teal-600 h-1 rounded-full transition-all duration-300"
               style={{ width: `${progress}%` }}
             />
           </div>
         </div>
 
         <div className="mb-8">
-          <h3 className="text-2xl font-semibold text-white mb-6">
+          <h3 className="text-xl font-medium text-gray-900 mb-8 leading-relaxed">
             {questions[currentQuestion].question}
           </h3>
           
-          <div className="space-y-4">
+          <div className="space-y-3">
             {questions[currentQuestion].options.map((option, index) => (
               <button
                 key={index}
                 onClick={() => handleOptionSelect(index)}
-                className={`w-full text-left p-4 rounded-xl transition-all duration-200 ${
+                className={`w-full text-left p-4 rounded-md transition-all duration-200 border ${
                   selectedOption === index
-                    ? 'bg-orange-500/30 border-2 border-orange-400 text-white'
-                    : 'bg-white/5 border-2 border-transparent text-gray-200 hover:bg-white/10 hover:border-white/20'
+                    ? 'bg-teal-50 border-teal-300 text-gray-900'
+                    : 'bg-gray-50 border-gray-200 text-gray-700 hover:bg-gray-100 hover:border-gray-300'
                 }`}
               >
                 <div className="flex items-center">
-                  <div className={`w-6 h-6 rounded-full border-2 mr-4 flex items-center justify-center ${
+                  <div className={`w-5 h-5 rounded-full border-2 mr-4 flex items-center justify-center ${
                     selectedOption === index 
-                      ? 'border-orange-400 bg-orange-500' 
-                      : 'border-gray-400'
+                      ? 'border-teal-600 bg-teal-600' 
+                      : 'border-gray-300'
                   }`}>
                     {selectedOption === index && (
-                      <div className="w-3 h-3 rounded-full bg-white" />
+                      <div className="w-2 h-2 rounded-full bg-white" />
                     )}
                   </div>
-                  <span className="text-lg">{option}</span>
+                  <span className="text-sm font-medium">{option}</span>
                 </div>
               </button>
             ))}
@@ -174,13 +174,13 @@ export default function Quiz({ onComplete }: QuizProps) {
           <button
             onClick={handleNext}
             disabled={selectedOption === null}
-            className={`px-8 py-3 rounded-full text-lg font-semibold transition-all duration-200 ${
+            className={`px-6 py-3 rounded-md text-sm font-medium transition-colors duration-200 ${
               selectedOption !== null
-                ? 'bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white transform hover:scale-105 shadow-lg'
-                : 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                ? 'bg-teal-600 hover:bg-teal-700 text-white'
+                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
             }`}
           >
-            {currentQuestion < questions.length - 1 ? 'Next Question' : 'Complete Quiz'}
+            {currentQuestion < questions.length - 1 ? 'Next Question' : 'Complete Assessment'}
           </button>
         </div>
       </div>

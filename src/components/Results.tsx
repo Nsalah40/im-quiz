@@ -10,31 +10,35 @@ const getScoreMessage = (score: number, totalQuestions: number) => {
 
   if (percentage >= 90) {
     return {
-      title: "AI Marketing Master! 🏆",
-      description: "Outstanding! You have an excellent grasp of AI marketing strategies and best practices. You're ready to lead AI transformation in your organization.",
-      color: "from-green-500 to-emerald-500",
-      bgColor: "bg-green-500/20"
+      title: "Expert Level",
+      description: "Outstanding performance. You have an excellent grasp of AI marketing strategies and best practices. You're ready to lead AI transformation in your organization.",
+      color: "bg-green-600",
+      bgColor: "bg-green-50",
+      textColor: "text-green-800"
     }
   } else if (percentage >= 75) {
     return {
-      title: "AI Marketing Pro! 🚀",
-      description: "Great job! You understand most AI marketing concepts well. With a little more learning, you'll be an AI marketing expert.",
-      color: "from-blue-500 to-cyan-500",
-      bgColor: "bg-blue-500/20"
+      title: "Advanced Level",
+      description: "Strong performance. You understand most AI marketing concepts well. With continued learning, you'll become an AI marketing expert.",
+      color: "bg-teal-600",
+      bgColor: "bg-teal-50",
+      textColor: "text-teal-800"
     }
   } else if (percentage >= 60) {
     return {
-      title: "AI Marketing Enthusiast! 📈",
-      description: "Good start! You have a solid foundation in AI marketing. Keep learning and you'll see great improvements in your marketing results.",
-      color: "from-orange-500 to-yellow-500",
-      bgColor: "bg-orange-500/20"
+      title: "Intermediate Level",
+      description: "Good foundation. You have solid understanding of AI marketing basics. Continued learning will significantly improve your marketing results.",
+      color: "bg-yellow-500",
+      bgColor: "bg-yellow-50",
+      textColor: "text-yellow-800"
     }
   } else {
     return {
-      title: "AI Marketing Beginner! 🌱",
-      description: "Everyone starts somewhere! You're at the beginning of your AI marketing journey. The Cut Through wit AI podcast will help you level up quickly.",
-      color: "from-purple-500 to-pink-500",
-      bgColor: "bg-purple-500/20"
+      title: "Beginner Level",
+      description: "Starting point identified. You're at the beginning of your AI marketing journey. The Cut Through wit AI podcast will help accelerate your learning.",
+      color: "bg-gray-500",
+      bgColor: "bg-gray-50",
+      textColor: "text-gray-800"
     }
   }
 }
@@ -47,51 +51,50 @@ export default function Results({ score, leadData }: ResultsProps) {
   const recommendations = [
     {
       title: "Start with Content AI",
-      description: "Begin using AI tools for content creation and optimization to see immediate ROI.",
-      icon: "✍️"
+      description: "Begin using AI tools for content creation and optimization to see immediate ROI."
     },
     {
       title: "Focus on Data Quality",
-      description: "Clean and organize your customer data to unlock AI's full potential.",
-      icon: "📊"
+      description: "Clean and organize your customer data to unlock AI's full potential."
     },
     {
       title: "Test and Iterate",
-      description: "Start small with AI experiments and scale what works for your business.",
-      icon: "🔬"
+      description: "Start small with AI experiments and scale what works for your business."
     },
     {
       title: "Listen to Cut Through wit AI",
-      description: "Get weekly insights and practical tips from AI marketing experts.",
-      icon: "🎧"
+      description: "Get weekly insights and practical tips from AI marketing experts."
     }
   ]
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
-      <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 shadow-2xl text-center">
-        <div className={`inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-r ${scoreMessage.color} mb-6`}>
-          <span className="text-3xl font-bold text-white">{score}/{totalQuestions}</span>
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
+        <div className={`inline-flex items-center justify-center w-20 h-20 rounded-full ${scoreMessage.color} mb-6`}>
+          <span className="text-2xl font-bold text-white">{score}/{totalQuestions}</span>
         </div>
         
-        <h1 className="text-4xl font-bold text-white mb-4">
+        <h1 className="text-3xl font-bold text-gray-900 mb-4 font-sans">
           {scoreMessage.title}
         </h1>
         
-        <p className="text-xl text-gray-200 mb-6">
+        <p className="text-lg text-gray-600 mb-8 leading-relaxed max-w-2xl mx-auto">
           {scoreMessage.description}
         </p>
 
-        <div className={`${scoreMessage.bgColor} backdrop-blur-sm rounded-2xl p-6 mb-8`}>
-          <div className="text-6xl font-bold text-white mb-2">{percentage}%</div>
-          <div className="text-lg text-gray-200">AI Marketing Knowledge Score</div>
+        <div className={`${scoreMessage.bgColor} rounded-lg p-6 mb-8 border border-gray-200`}>
+          <div className={`text-5xl font-bold ${scoreMessage.textColor} mb-2`}>{percentage}%</div>
+          <div className="text-sm font-medium text-gray-600">Assessment Score</div>
         </div>
 
-        <div className="bg-orange-500/20 backdrop-blur-sm rounded-2xl p-6">
-          <h3 className="text-2xl font-semibold text-orange-300 mb-4">
-            Thanks, {leadData.name}!
-          </h3>
-          <p className="text-gray-300 mb-4">
+        <div className="bg-black rounded-lg p-6">
+          <div className="flex items-center justify-center mb-4">
+            <div className="w-2 h-2 bg-yellow-400 rounded-full mr-3"></div>
+            <h3 className="text-xl font-semibold text-white">
+              Thank you, {leadData.name}!
+            </h3>
+          </div>
+          <p className="text-gray-300 mb-4 leading-relaxed">
             Your personalized AI marketing insights have been sent to <strong>{leadData.email}</strong>
             {leadData.company && ` for ${leadData.company}`}.
           </p>
@@ -101,51 +104,49 @@ export default function Results({ score, leadData }: ResultsProps) {
         </div>
       </div>
 
-      <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 shadow-2xl">
-        <h2 className="text-3xl font-bold text-white mb-6 text-center">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+        <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center font-sans">
           Your Next Steps in AI Marketing
         </h2>
         
         <div className="grid md:grid-cols-2 gap-6">
           {recommendations.map((rec, index) => (
-            <div key={index} className="bg-white/5 rounded-xl p-6 hover:bg-white/10 transition-all duration-200">
-              <div className="flex items-start space-x-4">
-                <div className="text-3xl">{rec.icon}</div>
-                <div>
-                  <h3 className="text-xl font-semibold text-white mb-2">{rec.title}</h3>
-                  <p className="text-gray-300">{rec.description}</p>
+            <div key={index} className="bg-gray-50 rounded-md p-6 border border-gray-200 hover:bg-gray-100 transition-colors duration-200">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{rec.title}</h3>
+                  <p className="text-gray-600">{rec.description}</p>
                 </div>
-              </div>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="bg-gradient-to-r from-orange-500/20 to-pink-500/20 backdrop-blur-md rounded-3xl p-8 shadow-2xl text-center">
-        <h2 className="text-3xl font-bold text-white mb-4">
-          Ready to Level Up Your AI Marketing?
-        </h2>
-        <p className="text-xl text-gray-200 mb-6">
-          Join thousands of marketers getting weekly AI insights from Cut Through wit AI
+      <div className="bg-black rounded-lg p-8 text-center">
+        <div className="flex items-center justify-center mb-4">
+          <div className="w-2 h-2 bg-yellow-400 rounded-full mr-3"></div>
+          <h2 className="text-2xl font-bold text-white font-sans">
+            Ready to Level Up Your AI Marketing?
+          </h2>
+        </div>
+        <p className="text-gray-300 mb-6 leading-relaxed">
+          Join ambitious founders getting weekly AI insights from Cut Through wit AI
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <a
             href="https://podcasts.apple.com/podcast/cut-through-wit-ai"
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-white/20 hover:bg-white/30 text-white px-6 py-3 rounded-full font-semibold transition-all duration-200 flex items-center justify-center space-x-2"
+            className="bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-md font-medium transition-colors duration-200 text-sm"
           >
-            <span>🎧</span>
-            <span>Listen on Apple Podcasts</span>
+            Listen on Apple Podcasts
           </a>
           <a
             href="https://open.spotify.com/show/cut-through-wit-ai"
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-white/20 hover:bg-white/30 text-white px-6 py-3 rounded-full font-semibold transition-all duration-200 flex items-center justify-center space-x-2"
+            className="bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-md font-medium transition-colors duration-200 text-sm"
           >
-            <span>🎵</span>
-            <span>Listen on Spotify</span>
+            Listen on Spotify
           </a>
         </div>
       </div>
