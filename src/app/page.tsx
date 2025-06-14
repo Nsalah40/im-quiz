@@ -111,6 +111,7 @@ export default function Home() {
           <LeadForm 
             onSubmit={handleLeadSubmit} 
             quizScore={quizResults.score}
+            quizAnswers={quizResults.answers}
             totalQuestions={8}
           />
         )}
@@ -118,6 +119,7 @@ export default function Home() {
         {currentStep === 'results' && (
           <Results 
             score={quizResults.score} 
+            answers={quizResults.answers}
             leadData={leadData}
           />
         )}

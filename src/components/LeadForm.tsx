@@ -5,10 +5,11 @@ import { useState } from 'react'
 interface LeadFormProps {
   onSubmit: (data: {name: string, email: string, company: string}) => void
   quizScore: number
+  quizAnswers: number[]
   totalQuestions: number
 }
 
-export default function LeadForm({ onSubmit, quizScore, totalQuestions }: LeadFormProps) {
+export default function LeadForm({ onSubmit, quizScore, quizAnswers, totalQuestions }: LeadFormProps) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -44,6 +45,7 @@ export default function LeadForm({ onSubmit, quizScore, totalQuestions }: LeadFo
           email: formData.email,
           company: formData.company,
           score: quizScore,
+          answers: quizAnswers,
           percentage: percentage
         }),
       })

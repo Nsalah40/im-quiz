@@ -1,7 +1,10 @@
 'use client'
 
+import { questions } from '@/data/questions'
+
 interface ResultsProps {
   score: number
+  answers: number[]
   leadData: {name: string, email: string, company: string}
 }
 
@@ -43,7 +46,7 @@ const getScoreMessage = (score: number, totalQuestions: number) => {
   }
 }
 
-export default function Results({ score, leadData }: ResultsProps) {
+export default function Results({ score, answers, leadData }: ResultsProps) {
   const totalQuestions = 8
   const percentage = Math.round((score / totalQuestions) * 100)
   const scoreMessage = getScoreMessage(score, totalQuestions)
@@ -82,6 +85,92 @@ export default function Results({ score, leadData }: ResultsProps) {
           </p>
           <p className="text-sm text-gray-400">
             Check your inbox for exclusive content and podcast recommendations tailored to your results.
+          </p>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+        <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center font-sans">
+          Your Quiz Summary
+        </h2>
+        
+        <div className="space-y-6">
+          {questions.map((question, index) => {
+            const userAnswer = answers[index]
+            const isCorrect = userAnswer === question.correct
+            
+            return (
+              <div key={index} className={`p-6 rounded-lg border-2 ${
+                isCorrect 
+                  ? 'bg-green-50 border-green-200' 
+                  : 'bg-red-50 border-red-200'
+              }`}>
+                <div className="flex items-start space-x-4">
+                  <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
+                    isCorrect 
+                      ? 'bg-green-600 text-white' 
+                      : 'bg-red-600 text-white'
+                  }`}>
+                    {isCorrect ? (
+                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                    ) : (
+                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                      </svg>
+                    )}
+                  </div>
+                  
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-gray-900 mb-3">
+                      Question {index + 1}: {question.question}
+                    </h3>
+                    
+                    <div className="mb-4">
+                      <p className={`font-medium ${
+                        isCorrect ? 'text-green-800' : 'text-red-800'
+                      }`}>
+                        Your answer: {question.options[userAnswer]}
+                        {isCorrect ? ' ✓' : ' ✗'}
+                      </p>
+                      {!isCorrect && (
+                        <p className="text-green-800 font-medium mt-1">
+                          Correct answer: {question.options[question.correct]} ✓
+                        </p>
+                      )}
+                    </div>
+                    
+                    <div className={`p-4 rounded-md ${
+                      isCorrect ? 'bg-green-100' : 'bg-yellow-50 border border-yellow-200'
+                    }`}>
+                      <h4 className="font-medium text-gray-900 mb-2">
+                        {isCorrect ? 'Why this is correct:' : 'Learn more:'}
+                      </h4>
+                      <p className="text-gray-700 text-sm leading-relaxed">
+                        {question.explanation}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+        
+        <div className="mt-8 p-6 bg-gray-50 rounded-lg text-center">
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+            Final Score: {score} out of {totalQuestions} ({percentage}%)
+          </h3>
+          <p className="text-gray-600">
+            {score === totalQuestions 
+              ? "Perfect score! You're an AI marketing expert! 🏆"
+              : score >= totalQuestions * 0.75
+              ? "Great job! You have a strong understanding of AI marketing. 🎯"
+              : score >= totalQuestions * 0.5
+              ? "Good foundation! Keep learning to become an AI marketing pro. 📈"
+              : "You're just getting started! The Cut Through wit AI podcast will help you level up quickly. 🚀"
+            }
           </p>
         </div>
       </div>

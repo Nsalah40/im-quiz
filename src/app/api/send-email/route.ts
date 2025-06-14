@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
+import { questions } from '@/data/questions'
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null
 
 export async function POST(request: NextRequest) {
   try {
-    const { name, email, company, score, percentage } = await request.json()
+    const { name, email, company, score, answers, percentage } = await request.json()
     
     // Use variables to avoid linting errors
     const companyInfo = company ? ` at ${company}` : ''
@@ -55,6 +56,25 @@ export async function POST(request: NextRequest) {
       <div class="score-box">
         <h3>Your Score: ${scoreInfo}</h3>
         <p>${getScoreMessage(percentage)}</p>
+      </div>
+      
+      <h3>Your Quiz Summary</h3>
+      <div style="margin: 20px 0;">
+        ${answers && Array.isArray(answers) ? answers.map((answer: number, index: number) => {
+          const question = questions[index]
+          const isCorrect = answer === question.correct
+          return `
+            <div style="margin: 15px 0; padding: 15px; background: ${isCorrect ? '#f0f9ff' : '#fef2f2'}; border-left: 4px solid ${isCorrect ? '#10b981' : '#ef4444'}; border-radius: 4px;">
+              <p style="margin: 0 0 8px 0; font-weight: bold; color: #374151;">
+                ${index + 1}. ${question.question}
+              </p>
+              <p style="margin: 0; color: ${isCorrect ? '#065f46' : '#991b1b'};">
+                ${isCorrect ? '✓' : '✗'} Your answer: ${question.options[answer]}
+                ${!isCorrect ? `<br><span style="color: #065f46;">✓ Correct: ${question.options[question.correct]}</span>` : ''}
+              </p>
+            </div>
+          `
+        }).join('') : ''}
       </div>
       
       <h3>Ready to Level Up Your AI Marketing?</h3>
