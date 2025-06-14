@@ -77,16 +77,25 @@ export async function POST(request: NextRequest) {
         }).join('') : ''}
       </div>
       
-      <h3>Ready to Level Up Your AI Marketing?</h3>
-      <p>Join ambitious founders getting weekly AI insights from Cut Through wit AI podcast:</p>
+      <h3>🎧 Ready to Level Up Your AI Marketing?</h3>
+      <p>Join ambitious founders getting weekly AI insights from Cut Through wit AI podcast. Click the links below to start listening:</p>
       
       <div style="text-align: center; margin: 30px 0;">
-        <a href="https://podcasts.apple.com/us/podcast/cut-through-with-ai/id1816728251" class="cta-button">
+        <a href="https://podcasts.apple.com/us/podcast/cut-through-with-ai/id1816728251" class="cta-button" style="display: block; margin: 10px auto; max-width: 250px;">
           🎧 Listen on Apple Podcasts
         </a>
-        <a href="https://open.spotify.com/show/0dDqmkwnkA3fGBSerXoDuC" class="cta-button">
+        <a href="https://open.spotify.com/show/0dDqmkwnkA3fGBSerXoDuC" class="cta-button" style="display: block; margin: 10px auto; max-width: 250px;">
           🎵 Listen on Spotify
         </a>
+      </div>
+      
+      <div style="background: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
+        <h4 style="margin: 0 0 10px 0; color: #374151;">🚀 Start with these episodes:</h4>
+        <ul style="margin: 0; padding-left: 20px; color: #6b7280;">
+          <li>Episode 1: AI Marketing Fundamentals</li>
+          <li>Latest Episode: Advanced AI Strategies</li>
+          <li>Browse the full catalog for your specific needs</li>
+        </ul>
       </div>
       
       <h3>What You'll Get:</h3>

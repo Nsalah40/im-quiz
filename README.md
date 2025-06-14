@@ -15,6 +15,7 @@ An interactive assessment tool that evaluates users' understanding of AI applica
 
 - **Interactive Quiz Engine** - 8 carefully crafted questions covering AI marketing fundamentals
 - **Lead Capture System** - Seamless form integration with automated email delivery
+- **Google Sheets Integration** - Automatic lead saving to spreadsheets for CRM management
 - **Personalized Results** - Score-based insights with tailored recommendations
 - **Professional Design** - Clean, minimal UI matching podcast branding
 - **Mobile Responsive** - Optimized for all devices and screen sizes
@@ -26,6 +27,7 @@ An interactive assessment tool that evaluates users' understanding of AI applica
 - **Language**: TypeScript 5.0
 - **Styling**: Tailwind CSS 4.0
 - **Email**: Resend API for reliable delivery
+- **Lead Management**: Google Sheets API integration
 - **Deployment**: Vercel
 - **Lint/Format**: ESLint + Next.js config
 
@@ -75,6 +77,37 @@ An interactive assessment tool that evaluates users' understanding of AI applica
    ```bash
    RESEND_API_KEY="re_your_actual_key_here"
    ```
+
+## 🔧 Google Sheets Integration Setup
+
+To automatically save quiz leads to Google Sheets:
+
+1. **Create a Google Cloud Project**
+   - Go to [Google Cloud Console](https://console.cloud.google.com/)
+   - Create a new project or select existing one
+
+2. **Enable Google Sheets API**
+   - In the API Library, search for "Google Sheets API"
+   - Click "Enable"
+
+3. **Create Service Account**
+   - Go to "Credentials" → "Create Credentials" → "Service Account"
+   - Download the JSON key file
+
+4. **Set up Google Sheet**
+   - Create a new Google Sheet
+   - Add headers in row 1: `Timestamp | Name | Email | Company | Score | Percentage`
+   - Share the sheet with your service account email (found in JSON file)
+
+5. **Configure Environment Variables**
+   ```bash
+   # Copy the entire JSON content as a single line
+   GOOGLE_SHEETS_CREDENTIALS='{"type":"service_account",...}'
+   
+   # Get the sheet ID from the URL
+   GOOGLE_SHEETS_ID="your-spreadsheet-id"
+   ```
+
 4. **Test functionality**: Complete the quiz and submit the form
 
 ## 🎨 Design System
@@ -100,7 +133,9 @@ The application follows the **Cut Through wit AI** podcast branding:
 ```
 src/
 ├── app/
-│   ├── api/send-email/    # Email API endpoint
+│   ├── api/
+│   │   ├── send-email/    # Email API endpoint
+│   │   └── save-lead/     # Google Sheets API endpoint
 │   ├── page.tsx           # Main application logic
 │   ├── layout.tsx         # Root layout
 │   └── globals.css        # Global styles

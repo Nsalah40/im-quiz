@@ -34,36 +34,54 @@ export default function LeadForm({ onSubmit, quizScore, quizAnswers, totalQuesti
       // Calculate percentage
       const percentage = Math.round((quizScore / totalQuestions) * 100)
       
-      // Send email via API
-      const response = await fetch('/api/send-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          company: formData.company,
-          score: quizScore,
-          answers: quizAnswers,
-          percentage: percentage
+      // Send email and save lead in parallel
+      const [emailResponse, leadResponse] = await Promise.all([
+        fetch('/api/send-email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            company: formData.company,
+            score: quizScore,
+            answers: quizAnswers,
+            percentage: percentage
+          }),
         }),
-      })
+        fetch('/api/save-lead', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            company: formData.company,
+            score: quizScore,
+            percentage: percentage
+          }),
+        })
+      ])
 
-      const result = await response.json()
+      const emailResult = await emailResponse.json()
+      const leadResult = await leadResponse.json()
       
-      if (!response.ok) {
-        console.error('Email API error:', result)
-        throw new Error(result.details || 'Failed to send email')
+      if (!emailResponse.ok) {
+        console.error('Email API error:', emailResult)
+        throw new Error(emailResult.details || 'Failed to send email')
       }
 
-      console.log('Email sent successfully:', result)
+      console.log('Email sent successfully:', emailResult)
+      console.log('Lead saved successfully:', leadResult)
+      
       // Continue with original flow
       onSubmit(formData)
     } catch (error) {
-      console.error('Error sending email:', error)
+      console.error('Error processing form submission:', error)
       // Alert user but still continue with the flow
-      alert('Note: There was an issue sending the email, but your results are ready!')
+      alert('Note: There was an issue processing your submission, but your results are ready!')
       onSubmit(formData)
     } finally {
       setIsSubmitting(false)
