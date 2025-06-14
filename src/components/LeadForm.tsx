@@ -59,7 +59,7 @@ export default function LeadForm({ onSubmit, quizScore, quizAnswers, totalQuesti
 
       // Try multiple lead capture methods (one will succeed based on configuration)
       const leadEndpoints = ['/api/save-lead', '/api/save-lead-airtable', '/api/save-lead-webhook']
-      promises.push(...leadEndpoints.map(endpoint => 
+      const leadPromises = leadEndpoints.map(endpoint => 
         fetch(endpoint, {
           method: 'POST',
           headers: {
@@ -68,9 +68,13 @@ export default function LeadForm({ onSubmit, quizScore, quizAnswers, totalQuesti
           body: JSON.stringify(leadData),
         }).catch(error => {
           console.log(`${endpoint} not available:`, error.message)
-          return { ok: false, json: async () => ({ success: false, error: error.message }) }
+          return new Response(JSON.stringify({ success: false, error: error.message }), {
+            status: 500,
+            headers: { 'Content-Type': 'application/json' }
+          })
         })
-      ))
+      )
+      promises.push(...leadPromises)
 
       const responses = await Promise.all(promises)
       const [emailResponse, ...leadResponses] = responses
@@ -82,7 +86,7 @@ export default function LeadForm({ onSubmit, quizScore, quizAnswers, totalQuesti
         leadResponses.map(async response => {
           try {
             return await response.json()
-          } catch (error) {
+          } catch {
             return { success: false, error: 'Failed to parse response' }
           }
         })
