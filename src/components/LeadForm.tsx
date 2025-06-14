@@ -48,15 +48,20 @@ export default function LeadForm({ onSubmit, quizScore, totalQuestions }: LeadFo
         }),
       })
 
+      const result = await response.json()
+      
       if (!response.ok) {
-        throw new Error('Failed to send email')
+        console.error('Email API error:', result)
+        throw new Error(result.details || 'Failed to send email')
       }
 
+      console.log('Email sent successfully:', result)
       // Continue with original flow
       onSubmit(formData)
     } catch (error) {
       console.error('Error sending email:', error)
-      // Still continue with the flow even if email fails
+      // Alert user but still continue with the flow
+      alert('Note: There was an issue sending the email, but your results are ready!')
       onSubmit(formData)
     } finally {
       setIsSubmitting(false)

@@ -11,6 +11,9 @@ export async function POST(request: NextRequest) {
     const companyInfo = company ? ` at ${company}` : ''
     const scoreInfo = `${score}/${8} (${percentage}%)`
 
+    console.log('Email API called with:', { name, email, company, score, percentage })
+    console.log('Resend instance available:', !!resend)
+
     // Validate required fields
     if (!name || !email) {
       return NextResponse.json(
@@ -93,7 +96,7 @@ export async function POST(request: NextRequest) {
     if (resend) {
       try {
         const data = await resend.emails.send({
-          from: 'Cut Through wit AI <noreply@cutthrough.ai>',
+          from: 'Cut Through wit AI <onboarding@resend.dev>',
           to: [email],
           subject: emailSubject,
           html: emailContent,
@@ -105,8 +108,12 @@ export async function POST(request: NextRequest) {
           emailId: data.data?.id || 'sent'
         })
       } catch (emailError) {
-        console.error('Resend error:', emailError)
-        // Fall back to simulation if email service fails
+        console.error('Resend error details:', emailError)
+        return NextResponse.json({
+          success: false,
+          error: 'Email service failed',
+          details: emailError instanceof Error ? emailError.message : 'Unknown error'
+        }, { status: 500 })
       }
     }
 
