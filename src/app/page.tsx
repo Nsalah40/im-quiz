@@ -68,7 +68,11 @@ export default function Home() {
         )}
 
         {currentStep === 'leadform' && (
-          <LeadForm onSubmit={handleLeadSubmit} />
+          <LeadForm 
+            onSubmit={handleLeadSubmit} 
+            quizScore={quizResults.score}
+            totalQuestions={8}
+          />
         )}
 
         {currentStep === 'results' && (

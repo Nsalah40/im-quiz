@@ -48,24 +48,6 @@ export default function Results({ score, leadData }: ResultsProps) {
   const percentage = Math.round((score / totalQuestions) * 100)
   const scoreMessage = getScoreMessage(score, totalQuestions)
 
-  const recommendations = [
-    {
-      title: "Start with Content AI",
-      description: "Begin using AI tools for content creation and optimization to see immediate ROI."
-    },
-    {
-      title: "Focus on Data Quality",
-      description: "Clean and organize your customer data to unlock AI's full potential."
-    },
-    {
-      title: "Test and Iterate",
-      description: "Start small with AI experiments and scale what works for your business."
-    },
-    {
-      title: "Listen to Cut Through wit AI",
-      description: "Get weekly insights and practical tips from AI marketing experts."
-    }
-  ]
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
@@ -104,23 +86,6 @@ export default function Results({ score, leadData }: ResultsProps) {
         </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center font-sans">
-          Your Next Steps in AI Marketing
-        </h2>
-        
-        <div className="grid md:grid-cols-2 gap-6">
-          {recommendations.map((rec, index) => (
-            <div key={index} className="bg-gray-50 rounded-md p-6 border border-gray-200 hover:bg-gray-100 transition-colors duration-200">
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">{rec.title}</h3>
-                  <p className="text-gray-600">{rec.description}</p>
-                </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
       <div className="bg-black rounded-lg p-8 text-center">
         <div className="flex items-center justify-center mb-4">
           <div className="w-2 h-2 bg-yellow-400 rounded-full mr-3"></div>
@@ -133,7 +98,7 @@ export default function Results({ score, leadData }: ResultsProps) {
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <a
-            href="https://podcasts.apple.com/podcast/cut-through-wit-ai"
+            href="https://podcasts.apple.com/us/podcast/cut-through-with-ai/id1816728251"
             target="_blank"
             rel="noopener noreferrer"
             className="bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-md font-medium transition-colors duration-200 text-sm"
@@ -141,7 +106,7 @@ export default function Results({ score, leadData }: ResultsProps) {
             Listen on Apple Podcasts
           </a>
           <a
-            href="https://open.spotify.com/show/cut-through-wit-ai"
+            href="https://open.spotify.com/show/0dDqmkwnkA3fGBSerXoDuC"
             target="_blank"
             rel="noopener noreferrer"
             className="bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-md font-medium transition-colors duration-200 text-sm"

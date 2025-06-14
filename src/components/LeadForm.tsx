@@ -4,9 +4,11 @@ import { useState } from 'react'
 
 interface LeadFormProps {
   onSubmit: (data: {name: string, email: string, company: string}) => void
+  quizScore: number
+  totalQuestions: number
 }
 
-export default function LeadForm({ onSubmit }: LeadFormProps) {
+export default function LeadForm({ onSubmit, quizScore, totalQuestions }: LeadFormProps) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -27,11 +29,38 @@ export default function LeadForm({ onSubmit }: LeadFormProps) {
 
     setIsSubmitting(true)
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    
-    onSubmit(formData)
-    setIsSubmitting(false)
+    try {
+      // Calculate percentage
+      const percentage = Math.round((quizScore / totalQuestions) * 100)
+      
+      // Send email via API
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          company: formData.company,
+          score: quizScore,
+          percentage: percentage
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to send email')
+      }
+
+      // Continue with original flow
+      onSubmit(formData)
+    } catch (error) {
+      console.error('Error sending email:', error)
+      // Still continue with the flow even if email fails
+      onSubmit(formData)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const isValid = formData.name.trim() && formData.email.trim()
