@@ -14,17 +14,18 @@ An interactive assessment tool that evaluates users' understanding of AI applica
 ### ✨ Key Features
 
 - **Interactive Quiz Engine** - 8 carefully crafted questions covering AI marketing fundamentals
-- **Lead Capture System** - Seamless form integration for email collection
+- **Lead Capture System** - Seamless form integration with automated email delivery
 - **Personalized Results** - Score-based insights with tailored recommendations
 - **Professional Design** - Clean, minimal UI matching podcast branding
 - **Mobile Responsive** - Optimized for all devices and screen sizes
-- **Performance Optimized** - Fast loading with Next.js 15 and static generation
+- **Email Automation** - Professional HTML emails with quiz results and podcast links
 
 ## 🚀 Tech Stack
 
 - **Framework**: Next.js 15.3.3 with App Router
 - **Language**: TypeScript 5.0
 - **Styling**: Tailwind CSS 4.0
+- **Email**: Resend API for reliable delivery
 - **Deployment**: Vercel
 - **Lint/Format**: ESLint + Next.js config
 
@@ -41,12 +42,18 @@ An interactive assessment tool that evaluates users' understanding of AI applica
    npm install
    ```
 
-3. **Start development server**
+3. **Set up environment variables**
+   ```bash
+   cp .env.example .env.local
+   # Edit .env.local and add your Resend API key
+   ```
+
+4. **Start development server**
    ```bash
    npm run dev
    ```
 
-4. **Open in browser**
+5. **Open in browser**
    ```
    http://localhost:3000
    ```
@@ -59,6 +66,16 @@ An interactive assessment tool that evaluates users' understanding of AI applica
 | `npm run build` | Build for production |
 | `npm run start` | Start production server |
 | `npm run lint` | Run ESLint checks |
+
+## 📧 Email Setup
+
+1. **Sign up for Resend**: Visit [resend.com](https://resend.com) (free tier: 3,000 emails/month)
+2. **Get API key**: Go to API Keys section and create one
+3. **Add to environment**: 
+   ```bash
+   RESEND_API_KEY="re_your_actual_key_here"
+   ```
+4. **Test functionality**: Complete the quiz and submit the form
 
 ## 🎨 Design System
 
@@ -75,21 +92,23 @@ The application follows the **Cut Through wit AI** podcast branding:
 1. **Introduction** → Professional landing page with podcast branding
 2. **Assessment** → 8 multiple-choice questions with progress tracking
 3. **Lead Capture** → Form collection with value proposition
-4. **Results** → Personalized insights and next steps
+4. **Email Delivery** → Automated email with results and podcast links
+5. **Results** → Clean results page with podcast promotion
 
 ## 🔧 Project Structure
 
 ```
 src/
 ├── app/
-│   ├── page.tsx          # Main application logic
-│   ├── layout.tsx        # Root layout
-│   └── globals.css       # Global styles
+│   ├── api/send-email/    # Email API endpoint
+│   ├── page.tsx           # Main application logic
+│   ├── layout.tsx         # Root layout
+│   └── globals.css        # Global styles
 ├── components/
-│   ├── Quiz.tsx          # Quiz component with questions
-│   ├── LeadForm.tsx      # Lead capture form
-│   └── Results.tsx       # Results display with recommendations
-└── CLAUDE.md            # Project instructions and context
+│   ├── Quiz.tsx           # Quiz component with questions
+│   ├── LeadForm.tsx       # Lead capture form with email integration
+│   └── Results.tsx        # Results display with podcast links
+└── CLAUDE.md             # Project instructions and context
 ```
 
 ## 🎯 Lead Generation Strategy
@@ -99,6 +118,7 @@ src/
 - **Conversion Points**: 
   - Educational assessment builds trust
   - Results create perceived value
+  - Automated email nurtures leads
   - Podcast promotion drives ongoing engagement
 
 ## 🚦 Performance
@@ -107,6 +127,7 @@ src/
 - **Lighthouse Score**: 100/100 (Performance, Accessibility, Best Practices, SEO)
 - **Core Web Vitals**: All green metrics
 - **Static Generation**: Pre-rendered at build time for optimal speed
+- **Email Delivery**: 99.9% deliverability with Resend
 
 ## 🤝 Contributing
 
@@ -124,6 +145,8 @@ This project is private and proprietary to Cut Through wit AI podcast.
 
 - **Live Demo**: [Deployed on Vercel]
 - **Podcast**: [Cut Through wit AI](https://cutthrough.transistor.fm/)
+- **Apple Podcasts**: [Listen Here](https://podcasts.apple.com/us/podcast/cut-through-with-ai/id1816728251)
+- **Spotify**: [Listen Here](https://open.spotify.com/show/0dDqmkwnkA3fGBSerXoDuC)
 - **Repository**: [GitHub](https://github.com/Nsalah40/im-quiz)
 
 ---
