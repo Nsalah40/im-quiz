@@ -34,39 +34,61 @@ export default function LeadForm({ onSubmit, quizScore, quizAnswers, totalQuesti
       // Calculate percentage
       const percentage = Math.round((quizScore / totalQuestions) * 100)
       
+      // Prepare lead data
+      const leadData = {
+        name: formData.name,
+        email: formData.email,
+        company: formData.company,
+        score: quizScore,
+        percentage: percentage
+      }
+
       // Send email and save lead in parallel
-      const [emailResponse, leadResponse] = await Promise.all([
+      const promises = [
         fetch('/api/send-email', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            name: formData.name,
-            email: formData.email,
-            company: formData.company,
-            score: quizScore,
+            ...leadData,
             answers: quizAnswers,
-            percentage: percentage
           }),
-        }),
-        fetch('/api/save-lead', {
+        })
+      ]
+
+      // Try multiple lead capture methods (one will succeed based on configuration)
+      const leadEndpoints = ['/api/save-lead', '/api/save-lead-airtable', '/api/save-lead-webhook']
+      promises.push(...leadEndpoints.map(endpoint => 
+        fetch(endpoint, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            name: formData.name,
-            email: formData.email,
-            company: formData.company,
-            score: quizScore,
-            percentage: percentage
-          }),
+          body: JSON.stringify(leadData),
+        }).catch(error => {
+          console.log(`${endpoint} not available:`, error.message)
+          return { ok: false, json: async () => ({ success: false, error: error.message }) }
         })
-      ])
+      ))
+
+      const responses = await Promise.all(promises)
+      const [emailResponse, ...leadResponses] = responses
 
       const emailResult = await emailResponse.json()
-      const leadResult = await leadResponse.json()
+      
+      // Process lead capture results
+      const leadResults = await Promise.all(
+        leadResponses.map(async response => {
+          try {
+            return await response.json()
+          } catch (error) {
+            return { success: false, error: 'Failed to parse response' }
+          }
+        })
+      )
+      
+      const successfulLeadSave = leadResults.some(result => result.success)
       
       if (!emailResponse.ok) {
         console.error('Email API error:', emailResult)
@@ -74,7 +96,12 @@ export default function LeadForm({ onSubmit, quizScore, quizAnswers, totalQuesti
       }
 
       console.log('Email sent successfully:', emailResult)
-      console.log('Lead saved successfully:', leadResult)
+      console.log('Lead capture attempts:', leadResults)
+      if (successfulLeadSave) {
+        console.log('Lead saved successfully via one of the configured methods')
+      } else {
+        console.log('No lead capture methods configured - leads not saved to external systems')
+      }
       
       // Continue with original flow
       onSubmit(formData)

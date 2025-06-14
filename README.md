@@ -78,11 +78,13 @@ An interactive assessment tool that evaluates users' understanding of AI applica
    RESEND_API_KEY="re_your_actual_key_here"
    ```
 
-## 🔧 Google Sheets Integration Setup
+## 🔧 Lead Capture Setup (Choose One Option)
 
-To automatically save quiz leads to Google Sheets:
+### **Option 1: Google Sheets Integration**
 
-1. **Create a Google Cloud Project**
+⚠️ **Note**: Some organizations block service account key creation. If you get an error about "Organization Policy", try Option 2 or 3 below.
+
+1. **Create a Google Cloud Project** (use personal account if work account is blocked)
    - Go to [Google Cloud Console](https://console.cloud.google.com/)
    - Create a new project or select existing one
 
@@ -101,12 +103,53 @@ To automatically save quiz leads to Google Sheets:
 
 5. **Configure Environment Variables**
    ```bash
-   # Copy the entire JSON content as a single line
    GOOGLE_SHEETS_CREDENTIALS='{"type":"service_account",...}'
-   
-   # Get the sheet ID from the URL
    GOOGLE_SHEETS_ID="your-spreadsheet-id"
    ```
+
+### **Option 2: Airtable Integration** (Recommended Alternative)
+
+1. **Create Airtable Account**
+   - Sign up at [airtable.com](https://airtable.com)
+   - Create a new base called "AI Quiz Leads"
+
+2. **Set up Table**
+   - Create a table with these fields:
+     - Name (Single line text)
+     - Email (Email)
+     - Company (Single line text)
+     - Score (Number)
+     - Percentage (Number)
+     - Timestamp (Date)
+
+3. **Get API Credentials**
+   - Go to [airtable.com/create/tokens](https://airtable.com/create/tokens)
+   - Create a personal access token
+   - Get your Base ID from the API documentation
+
+4. **Configure Environment Variables**
+   ```bash
+   AIRTABLE_API_KEY="your-airtable-api-key"
+   AIRTABLE_BASE_ID="your-airtable-base-id"
+   AIRTABLE_TABLE_NAME="Leads"
+   ```
+
+### **Option 3: Webhook Integration** (Works with any service)
+
+Use this with Zapier, Make.com, or any webhook receiver:
+
+1. **Set up Webhook**
+   - Create a webhook in your preferred service (Zapier, Make, etc.)
+   - Copy the webhook URL
+
+2. **Configure Environment Variable**
+   ```bash
+   WEBHOOK_URL="https://hooks.zapier.com/hooks/catch/your-webhook-url"
+   ```
+
+3. **Connect to Your CRM**
+   - Use the webhook service to forward data to Google Sheets, HubSpot, Salesforce, etc.
+   - No API keys needed - just configure the webhook service
 
 4. **Test functionality**: Complete the quiz and submit the form
 
